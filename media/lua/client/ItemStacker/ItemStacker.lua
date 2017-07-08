@@ -30,11 +30,34 @@ ItemStacker.stackItemsFromCurrentInventory = function()
             local lootInv = getPlayerLoot(ItemStacker.playerId).inventory;
             local player = getPlayer();
             local container = item:getContainer();
-            if lootInv:contains(item:getType()) then
+            if ItemStacker.canStackItem(item, lootInv) then
                 ISTimedActionQueue.add(ISInventoryTransferAction:new(player, item, container, lootInv));
             end
         end
     end
+end
+
+ItemStacker.canStackItem = function(item, container)
+    local itemName = ItemStacker.getGenericItemName(item:getType());
+    local items = container:getItems();
+    for i = 0, items:size()-1 do
+        local itemFromContainer = items:get(i):getType();
+        itemFromContainer = ItemStacker.getGenericItemName(itemFromContainer);
+        if itemName == itemFromContainer then
+            return true;
+        end
+    end
+    
+    return false;
+end
+
+-- Eliminates digits in the end of the item name 
+ItemStacker.getGenericItemName = function(itemName)
+    while tonumber(itemName:sub(-1, -1)) ~= nil do
+        itemName = itemName:sub(1, -2);
+    end
+    
+    return itemName;
 end
 
 Events.OnCreatePlayer.Add(ItemStacker.addContainerStackButton);
