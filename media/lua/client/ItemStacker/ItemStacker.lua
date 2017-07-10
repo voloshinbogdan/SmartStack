@@ -11,7 +11,7 @@ ItemStacker.addContainerStackButton = function(playerId)
     ItemStacker.playerId = playerId;
     local playerLoot = getPlayerLoot(playerId);
     local buttonX = playerLoot.transferAll:getX() - getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackAll")) - 10;
-    ItemStacker.stackItemsButton = ISButton:new(buttonX, -1, 50, 14, getText("UI_StackAll"), playerLoot, ItemStacker.stackItemsFromCurrentInventory);
+    ItemStacker.stackItemsButton = ISButton:new(buttonX, -1, 50, 14, getText("UI_StackAll"), playerLoot, ItemStacker.stackItemsFromCurrentToSelected);
     ItemStacker.stackItemsButton:initialise();
     ItemStacker.stackItemsButton.borderColor.a = 0.0;
     ItemStacker.stackItemsButton.backgroundColor.a = 0.0;
@@ -22,20 +22,39 @@ ItemStacker.addContainerStackButton = function(playerId)
     ItemStacker.stackItemsButton:setAnchorLeft(false);
 end
 
-ItemStacker.stackItemsFromCurrentInventory = function()
-    local items = getPlayerInventory(ItemStacker.playerId).inventory:getItems();
+-- Stacks given items to destination containers, assuming that items are from one of the player's inventories
+ItemStacker.stackItems = function(items, destinationContainers)
     for i = 0, items:size()-1 do
         local item = items:get(i);
         if not item:isEquipped() and item:getType() ~= "KeyRing" and not item:isFavorite() then
-            local lootPage = getPlayerLoot(ItemStacker.playerId);
-            local lootInv = getPlayerLoot(ItemStacker.playerId).inventory;
-            local player = getPlayer();
-            local container = item:getContainer();
-            if ItemStacker.canStackItem(item, lootInv) then
-                ISTimedActionQueue.add(ISInventoryTransferAction:new(player, item, container, lootInv));
+            for j = 1, #destinationContainers do
+                local destinationContainer = destinationContainers[j];
+                local player = getPlayer();
+                local sourceContainer = item:getContainer();
+                if ItemStacker.canStackItem(item, destinationContainer) then
+                    ISTimedActionQueue.add(ISInventoryTransferAction:new(player, item, sourceContainer, destinationContainer));
+                end
             end
         end
     end
+end
+
+-- Stacks items from current player's inventory to nearby containers
+ItemStacker.stackItemsFromCurrentToNearby = function ()
+    local nearbyContainers = getPlayerLoot(ItemStacker.playerId).backpacks;
+    local destinationContainers = {};
+    for i = 1, #nearbyContainers do
+        destinationContainers[i] = nearbyContainers[i].inventory;
+    end
+    local items = getPlayerInventory(ItemStacker.playerId).inventory:getItems();
+    ItemStacker.stackItems(items, destinationContainers);
+end
+
+-- Stacks items from currentplayer's inventory to selected loot container
+ItemStacker.stackItemsFromCurrentToSelected = function()
+    local destinationContainers = { getPlayerLoot(ItemStacker.playerId).inventory };
+    local items = getPlayerInventory(ItemStacker.playerId).inventory:getItems();
+    ItemStacker.stackItems(items, destinationContainers);
 end
 
 -- Checks if item can be stacked to given container
