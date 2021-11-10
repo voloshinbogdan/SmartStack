@@ -41,7 +41,7 @@ end
 
 -- Stacks items from current player's inventory to nearby containers
 ItemStacker.stackItemsFromCurrentToNearby = function ()
-    local nearbyContainers = getPlayerLoot(ItemStacker.playerId).backpacks;
+    local nearbyContainers =  getPlayerLoot(ItemStacker.playerId).inventoryPane.inventoryPage.backpacks;
     local destinationContainers = {};
     for i = 1, #nearbyContainers do
         destinationContainers[i] = nearbyContainers[i].inventory;
