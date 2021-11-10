@@ -10,12 +10,14 @@ ItemStacker.addContainerStackButton = function(playerId)
     ItemStacker.playerId = playerId;
     local playerLoot = getPlayerLoot(playerId);
     -- Stack: stack only to selected container
-    local buttonX = playerLoot.transferAll:getX();
-    local stackToVisible = ISButton:new(buttonX, -1, 50, 14, getText("UI_StackToSelected"), playerLoot, ItemStacker.stackItemsFromCurrentToSelected);
+    local textWidth = getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackToSelected"))
+    local buttonX = playerLoot.width * 0.6
+    local stackToVisible = ISButton:new(buttonX, 1, textWidth, 14, getText("UI_StackToSelected"), playerLoot, ItemStacker.stackItemsFromCurrentToSelected);
     ItemStacker.initializeButton(stackToVisible, playerLoot)
     -- Stack To All: stack to all available to the player at the moment containers
-    local buttonX = buttonX + getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackToSelected"));
-    local stackToAll = ISButton:new(buttonX, -1, 50, 14, getText("UI_StackToAll"), playerLoot, ItemStacker.stackItemsFromCurrentToNearby);
+    textWidth = getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackToAll"))
+    local buttonX = stackToVisible:getRight();
+    local stackToAll = ISButton:new(buttonX, 1, textWidth, 14, getText("UI_StackToAll"), playerLoot, ItemStacker.stackItemsFromCurrentToNearby);
     ItemStacker.initializeButton(stackToAll, playerLoot)
 end
 
