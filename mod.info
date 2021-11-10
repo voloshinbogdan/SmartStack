@@ -1,4 +1,7 @@
 name=Smart Stack
 id=SmartStack
-description=Allows you to stack items to containers
+description=This mod adds two buttons to the loot panel, allowing you to re-supply your containers in one click, similar to Terraria's "quick stack" feature. 
+description=- The "Stack" button stacks into the selected loot container,
+description=- The "To All" button stacks into all currently available loot containers.
+description=Both buttons move from your inventory only items that are already present in the loot container, excluding favourites, equipped, and key ring items.
 url=https://github.com/voloshinbogdan/SmartStack
