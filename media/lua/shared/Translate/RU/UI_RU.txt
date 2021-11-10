@@ -1,3 +1,4 @@
 UI_RU = {
-	UI_StackAll = "Дополнить"
+	UI_StackToAll = "Все",
+	UI_StackToSelected = "Дополнить"
 }

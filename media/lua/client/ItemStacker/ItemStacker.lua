@@ -5,21 +5,29 @@ require("TimedActions/ISTimedActionQueue");
 
 ItemStacker = {};
 ItemStacker.playerId = {};
-ItemStacker.stackItemsButton = {};
 
 ItemStacker.addContainerStackButton = function(playerId)
     ItemStacker.playerId = playerId;
     local playerLoot = getPlayerLoot(playerId);
-    local buttonX = playerLoot.transferAll:getX() - getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackAll")) - 10;
-    ItemStacker.stackItemsButton = ISButton:new(buttonX, -1, 50, 14, getText("UI_StackAll"), playerLoot, ItemStacker.stackItemsFromCurrentToSelected);
-    ItemStacker.stackItemsButton:initialise();
-    ItemStacker.stackItemsButton.borderColor.a = 0.0;
-    ItemStacker.stackItemsButton.backgroundColor.a = 0.0;
-    ItemStacker.stackItemsButton.backgroundColorMouseOver.a = 0.7;
-    playerLoot:addChild(ItemStacker.stackItemsButton);
-    ItemStacker.stackItemsButton:setVisible(true);
-    ItemStacker.stackItemsButton:setAnchorRight(true);
-    ItemStacker.stackItemsButton:setAnchorLeft(false);
+    -- Stack: stack only to selected container
+    local buttonX = playerLoot.transferAll:getX();
+    local stackToVisible = ISButton:new(buttonX, -1, 50, 14, getText("UI_StackToSelected"), playerLoot, ItemStacker.stackItemsFromCurrentToSelected);
+    ItemStacker.initializeButton(stackToVisible, playerLoot)
+    -- Stack To All: stack to all available to the player at the moment containers
+    local buttonX = buttonX + getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackToSelected"));
+    local stackToAll = ISButton:new(buttonX, -1, 50, 14, getText("UI_StackToAll"), playerLoot, ItemStacker.stackItemsFromCurrentToNearby);
+    ItemStacker.initializeButton(stackToAll, playerLoot)
+end
+
+ItemStacker.initializeButton = function(button, parent)
+    button:initialise();
+    button.borderColor.a = 0.0;
+    button.backgroundColor.a = 0.0;
+    button.backgroundColorMouseOver.a = 0.7;
+    parent:addChild(button);
+    button:setVisible(true);
+    button:setAnchorRight(true);
+    button:setAnchorLeft(false);
 end
 
 -- Stacks given items to destination containers, assuming that items are from one of the player's inventories
@@ -68,7 +76,6 @@ ItemStacker.canStackItem = function(item, container)
             return true;
         end
     end
-    
     return false;
 end
 
@@ -77,7 +84,6 @@ ItemStacker.getGenericItemName = function(itemName)
     while tonumber(itemName:sub(-1, -1)) ~= nil do
         itemName = itemName:sub(1, -2);
     end
-    
     return itemName;
 end
 
