@@ -34,12 +34,13 @@ end
 
 -- Stacks given items to destination containers, assuming that items are from one of the player's inventories
 ItemStacker.stackItems = function(items, destinationContainers)
+    local player = getPlayer();
+    local hotBar = getPlayerHotbar(ItemStacker.playerId)
     for i = 0, items:size()-1 do
         local item = items:get(i);
-        if not item:isEquipped() and item:getType() ~= "KeyRing" and not item:isFavorite() then
+        if not item:isEquipped() and item:getType() ~= "KeyRing" and not item:isFavorite() and not hotBar:isInHotbar(item) then
             for j = 1, #destinationContainers do
                 local destinationContainer = destinationContainers[j];
-                local player = getPlayer();
                 local sourceContainer = item:getContainer();
                 if ItemStacker.canStackItem(item, destinationContainer) then
                     ISTimedActionQueue.add(ISInventoryTransferAction:new(player, item, sourceContainer, destinationContainer));
