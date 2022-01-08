@@ -69,6 +69,12 @@ end
 
 -- Checks if item can be stacked to given container
 ItemStacker.canStackItem = function(item, container)
+    -- Check if container has room for the item
+    local playerObj = getSpecificPlayer(ItemStacker.playerId)
+    if container:hasRoomFor(playerObj, item:getUnequippedWeight()) == false then
+        return false;
+    end
+    -- Check if item is present in the container
     local itemName = ItemStacker.getGenericItemName(item:getType());
     local items = container:getItems();
     for i = 0, items:size()-1 do
