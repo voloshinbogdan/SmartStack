@@ -36,14 +36,24 @@ end
 ItemStacker.stackItems = function(items, destinationContainers)
     local player = getPlayer();
     local hotBar = getPlayerHotbar(ItemStacker.playerId)
+    -- fill added weights for each container with zero weight
+    local addedWeight = {}
+    for j = 1, #destinationContainers do
+        addedWeight[destinationContainers[j]] = 0.0
+    end
+
     for i = 0, items:size()-1 do
         local item = items:get(i);
         if not item:isEquipped() and item:getType() ~= "KeyRing" and not item:isFavorite() and not hotBar:isInHotbar(item) then
             for j = 1, #destinationContainers do
                 local destinationContainer = destinationContainers[j];
                 local sourceContainer = item:getContainer();
-                if ItemStacker.canStackItem(item, destinationContainer) then
+                if ItemStacker.canStackItem(item, destinationContainer, addedWeight[destinationContainer]) then
                     ISTimedActionQueue.add(ISInventoryTransferAction:new(player, item, sourceContainer, destinationContainer));
+                    -- since queue fills synchronously and items transfer over time, we remember weight for
+                    -- each added container to prevent container overflow
+                    addedWeight[destinationContainer] = addedWeight[destinationContainer] + item:getUnequippedWeight();
+                    break;
                 end
             end
         end
@@ -69,10 +79,10 @@ ItemStacker.stackItemsFromCurrentToSelected = function()
 end
 
 -- Checks if item can be stacked to given container
-ItemStacker.canStackItem = function(item, container)
+ItemStacker.canStackItem = function(item, container, addedWeight)
     -- Check if container has room for the item
     local playerObj = getSpecificPlayer(ItemStacker.playerId)
-    if container:hasRoomFor(playerObj, item:getUnequippedWeight()) == false then
+    if container:hasRoomFor(playerObj, item:getUnequippedWeight() + addedWeight) == false then
         return false;
     end
     -- Check if item is present in the container
