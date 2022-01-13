@@ -11,7 +11,7 @@ ItemStacker.addContainerStackButton = function(playerId)
     local playerLoot = getPlayerLoot(playerId);
     -- Stack: stack only to selected container
     local textWidth = getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackToSelected"))
-    local buttonX = playerLoot.width * 0.6
+    local buttonX = playerLoot.toggleStove:getRight();
     local stackToVisible = ISButton:new(buttonX, 1, textWidth, 14, getText("UI_StackToSelected"), playerLoot, ItemStacker.stackItemsFromCurrentToSelected);
     ItemStacker.initializeButton(stackToVisible, playerLoot)
     -- Stack To All: stack to all available to the player at the moment containers
@@ -28,8 +28,8 @@ ItemStacker.initializeButton = function(button, parent)
     button.backgroundColorMouseOver.a = 0.7;
     parent:addChild(button);
     button:setVisible(true);
-    button:setAnchorRight(true);
-    button:setAnchorLeft(false);
+    button:setAnchorRight(false);
+    button:setAnchorLeft(true);
 end
 
 -- Stacks given items to destination containers, assuming that items are from one of the player's inventories
