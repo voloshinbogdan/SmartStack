@@ -1,0 +1,4 @@
+UI_EN = {	
+	UI_StackToAll = "To All",
+	UI_StackToSelected = "Stack"
+}
