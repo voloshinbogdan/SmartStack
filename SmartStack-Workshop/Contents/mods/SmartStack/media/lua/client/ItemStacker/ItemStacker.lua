@@ -12,13 +12,19 @@ ItemStacker.addContainerStackButton = function(playerId)
     -- Stack: stack only to selected container
     local textWidth = getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackToSelected"))
     local buttonX = playerLoot.toggleStove:getRight();
-    local stackToVisible = ISButton:new(buttonX, 1, textWidth, 14, getText("UI_StackToSelected"), playerLoot, ItemStacker.stackItemsFromCurrentToSelected);
+    local titleBarHeight = playerLoot:titleBarHeight()
+    local stackToVisible = ISButton:new(buttonX, 1, textWidth, titleBarHeight, getText("UI_StackToSelected"), playerLoot, ItemStacker.stackItemsFromCurrentToSelected);
     ItemStacker.initializeButton(stackToVisible, playerLoot)
     -- Stack To All: stack to all available to the player at the moment containers
     textWidth = getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackToAll"))
     local buttonX = stackToVisible:getRight();
-    local stackToAll = ISButton:new(buttonX, 1, textWidth, 14, getText("UI_StackToAll"), playerLoot, ItemStacker.stackItemsFromCurrentToNearby);
+    local stackToAll = ISButton:new(buttonX, 1, textWidth, titleBarHeight, getText("UI_StackToAll"), playerLoot, ItemStacker.stackItemsFromCurrentToNearby);
     ItemStacker.initializeButton(stackToAll, playerLoot)
+end
+
+ItemStacker.addStackContextMenuItems = function(player, context, items)
+    context:addOption(getText('UI_ContextMenu_StackToSelected'), getSpecificPlayer(player), ItemStacker.stackItemsFromCurrentToSelected)
+    context:addOption(getText('UI_ContextMenu_StackToAll'), getSpecificPlayer(player), ItemStacker.stackItemsFromCurrentToNearby)
 end
 
 ItemStacker.initializeButton = function(button, parent)
@@ -107,3 +113,4 @@ ItemStacker.getGenericItemName = function(itemName)
 end
 
 Events.OnCreatePlayer.Add(ItemStacker.addContainerStackButton);
+Events.OnFillInventoryObjectContextMenu.Add(ItemStacker.addStackContextMenuItems);
