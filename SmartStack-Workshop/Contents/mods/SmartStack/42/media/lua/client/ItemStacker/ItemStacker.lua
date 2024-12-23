@@ -22,6 +22,11 @@ ItemStacker.addContainerStackButton = function(playerId)
     ItemStacker.initializeButton(stackToAll, playerLoot)
 end
 
+ItemStacker.addStackContextMenuItems = function(player, context, items)
+    context:addOption(getText('UI_ContextMenu_StackToSelected'), getSpecificPlayer(player), ItemStacker.stackItemsFromCurrentToSelected)
+    context:addOption(getText('UI_ContextMenu_StackToAll'), getSpecificPlayer(player), ItemStacker.stackItemsFromCurrentToNearby)
+end
+
 ItemStacker.initializeButton = function(button, parent)
     button:initialise();
     button.borderColor.a = 0.0;
@@ -108,3 +113,4 @@ ItemStacker.getGenericItemName = function(itemName)
 end
 
 Events.OnCreatePlayer.Add(ItemStacker.addContainerStackButton);
+Events.OnFillInventoryObjectContextMenu.Add(ItemStacker.addStackContextMenuItems);

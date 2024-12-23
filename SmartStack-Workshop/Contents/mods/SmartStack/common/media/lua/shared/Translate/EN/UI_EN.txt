@@ -1,4 +1,6 @@
 UI_EN = {	
 	UI_StackToAll = "To All",
-	UI_StackToSelected = "Stack"
+	UI_ContextMenu_StackToAll = "Stack To All",
+	UI_StackToSelected = "Stack",
+	UI_ContextMenu_StackToSelected = "Stack To Selected"
 }
