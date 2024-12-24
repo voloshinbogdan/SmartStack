@@ -3,9 +3,23 @@ require("ISUI/PlayerData/ISPlayerData");
 require("ISUI/ISLayoutManager");
 require("TimedActions/ISTimedActionQueue");
 
+-- Fields
+
 ItemStacker = {};
 ItemStacker.playerId = {};
+ItemStacker.KEY_STACK_TO_SELECTED = "SmartStack_StackToSelected";
+ItemStacker.KEY_STACK_TO_ALL = "SmartStack_StackToAll";
 
+-- Initialization
+
+-- adding keybinds
+ItemStacker.addKeybinds = function()
+    table.insert(keyBinding, {value = "[SmartStack]"});
+    table.insert(keyBinding, {value = ItemStacker.KEY_STACK_TO_SELECTED, key=""});
+    table.insert(keyBinding, {value = ItemStacker.KEY_STACK_TO_ALL, key=""});
+end
+
+-- adding destination inventory bar buttons
 ItemStacker.addContainerStackButton = function(playerId)
     ItemStacker.playerId = playerId;
     local playerLoot = getPlayerLoot(playerId);
@@ -22,11 +36,13 @@ ItemStacker.addContainerStackButton = function(playerId)
     ItemStacker.initializeButton(stackToAll, playerLoot)
 end
 
+-- adding context menus
 ItemStacker.addStackContextMenuItems = function(player, context, items)
     context:addOption(getText('UI_ContextMenu_StackToSelected'), getSpecificPlayer(player), ItemStacker.stackItemsFromCurrentToSelected)
     context:addOption(getText('UI_ContextMenu_StackToAll'), getSpecificPlayer(player), ItemStacker.stackItemsFromCurrentToNearby)
 end
 
+-- button helper
 ItemStacker.initializeButton = function(button, parent)
     button:initialise();
     button.borderColor.a = 0.0;
@@ -37,6 +53,20 @@ ItemStacker.initializeButton = function(button, parent)
     button:setAnchorRight(false);
     button:setAnchorLeft(true);
 end
+
+-- hotkey listener
+
+ItemStacker.onKeyPressed = function(key)
+	if getSpecificPlayer(0) and getGameSpeed() > 0 and getPlayerInventory(0) and getCore():getGameMode() ~= "Tutorial" then
+        if key == getCore():getKey(ItemStacker.KEY_STACK_TO_SELECTED) then
+            ItemStacker.stackItemsFromCurrentToSelected()
+        elseif key == getCore():getKey(ItemStacker.KEY_STACK_TO_ALL) then
+            ItemStacker.stackItemsFromCurrentToNearby()
+        end
+    end
+end
+
+-- item stacking functionality
 
 -- Stacks given items to destination containers, assuming that items are from one of the player's inventories
 ItemStacker.stackItems = function(items, destinationContainers)
@@ -112,5 +142,9 @@ ItemStacker.getGenericItemName = function(itemName)
     return itemName;
 end
 
+-- Subscribing to events
+
+Events.OnGameBoot.Add(ItemStacker.addKeybinds);
+Events.OnKeyPressed.Add(ItemStacker.onKeyPressed);
 Events.OnCreatePlayer.Add(ItemStacker.addContainerStackButton);
 Events.OnFillInventoryObjectContextMenu.Add(ItemStacker.addStackContextMenuItems);
