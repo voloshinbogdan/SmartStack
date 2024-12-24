@@ -1,4 +1,7 @@
 UI_RU = {
+	UI_optionscreen_binding_SmartStack = "Smart Stack",
+	UI_optionscreen_binding_SmartStack_StackToSelected = "Дополнить выбранный контейнер",
+	UI_optionscreen_binding_SmartStack_StackToAll = "Дополнить все контейнеры",
 	UI_StackToAll = "Все",
 	UI_ContextMenu_StackToAll = "Дополнить Все",
 	UI_StackToSelected = "Дополнить",

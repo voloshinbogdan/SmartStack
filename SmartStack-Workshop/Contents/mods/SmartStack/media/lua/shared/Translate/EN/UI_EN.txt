@@ -1,4 +1,7 @@
-UI_EN = {	
+UI_EN = {
+	UI_optionscreen_binding_SmartStack = "Smart Stack",
+	UI_optionscreen_binding_SmartStack_StackToSelected = "Stack To Selected",
+	UI_optionscreen_binding_SmartStack_StackToAll = "Stack To All Reachable",
 	UI_StackToAll = "To All",
 	UI_ContextMenu_StackToAll = "Stack To All",
 	UI_StackToSelected = "Stack",
