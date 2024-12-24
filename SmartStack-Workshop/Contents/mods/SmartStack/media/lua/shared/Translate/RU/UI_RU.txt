@@ -1,6 +1,6 @@
 UI_RU = {
-	UI_StackToAll = "Р’СЃРµ",
-	UI_ContextMenu_StackToAll = "Р”РѕРїРѕР»РЅРёС‚СЊ Р’СЃРµ",
-	UI_StackToSelected = "Р”РѕРїРѕР»РЅРёС‚СЊ",
-	UI_ContextMenu_StackToSelected = "Р”РѕРїРѕР»РЅРёС‚СЊ"
+	UI_StackToAll = "Все",
+	UI_ContextMenu_StackToAll = "Дополнить Все",
+	UI_StackToSelected = "Дополнить",
+	UI_ContextMenu_StackToSelected = "Дополнить"
 }
