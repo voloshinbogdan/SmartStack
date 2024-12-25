@@ -14,9 +14,17 @@ ItemStacker.KEY_STACK_TO_ALL = "SmartStack_StackToAll";
 
 -- adding keybinds
 ItemStacker.addKeybinds = function()
-    table.insert(keyBinding, {value = "[SmartStack]"});
-    table.insert(keyBinding, {value = ItemStacker.KEY_STACK_TO_SELECTED, key=""});
-    table.insert(keyBinding, {value = ItemStacker.KEY_STACK_TO_ALL, key=""});
+    local bind = {};
+    bind.value = "[SmartStack]"
+    table.insert(keyBinding, bind);
+    bind = {};
+    bind.value = ItemStacker.KEY_STACK_TO_SELECTED;
+    bind.key = Keyboard.KEY_NONE
+    table.insert(keyBinding, bind);
+    bind = {};
+    bind.value = ItemStacker.KEY_STACK_TO_ALL;
+    bind.key = Keyboard.KEY_NONE
+    table.insert(keyBinding, bind);
 end
 
 -- adding destination inventory bar buttons
