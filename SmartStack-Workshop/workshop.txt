@@ -7,6 +7,6 @@ description=This mod adds two convenient buttons to the loot panel and inventory
 description=- The "Stack" button moves items from your inventory into the selected loot container.
 description=- The "To All" button stacks items into all currently available loot containers.
 description=Both buttons only transfer items already present in the loot containers. They automatically exclude favorites, equipped items, and items stored in the key ring.
-description=They also can be bound to desired hotkeys in key binding settings in game's menu.
+description=They also can be bound to desired hotkeys in key binding settings in game's menu or disabled in menu Mods > SmartStack (disabling is only for Build 42+).
 tags=Build 40;Build 41;Build 42;Interface;Misc;Multiplayer;QoL
 visibility=public

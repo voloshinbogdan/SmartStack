@@ -1,4 +1,8 @@
 UI_EN = {
+	UI_options_966221273_showBarButtons = "Show Bar Buttons",
+	UI_options_966221273_showBarButtons_tooltip = "Show 'Stack' and 'All' buttons on the title bar of the destination inventory",
+	UI_options_966221273_showContextMenuButtons = "Show Context Menu Buttons",
+	UI_options_966221273_showContextMenuButtons_tooltip = "Show 'Stack To Selected' and 'Stack To All' buttons in inventory context menu",
 	UI_optionscreen_binding_SmartStack = "Smart Stack",
 	UI_optionscreen_binding_SmartStack_StackToSelected = "Stack To Selected",
 	UI_optionscreen_binding_SmartStack_StackToAll = "Stack To All Reachable",

@@ -9,6 +9,7 @@ ItemStacker = {};
 ItemStacker.playerId = {};
 ItemStacker.KEY_STACK_TO_SELECTED = "SmartStack_StackToSelected";
 ItemStacker.KEY_STACK_TO_ALL = "SmartStack_StackToAll";
+ItemStacker.config = { showBarButtons = nil, showContextMenuButtons = nil }
 
 -- Initialization
 
@@ -27,9 +28,18 @@ ItemStacker.addKeybinds = function()
     table.insert(keyBinding, bind);
 end
 
+ItemStacker.addModOptions = function()
+    local options = PZAPI.ModOptions:create("966221273", "SmartStack")
+    ItemStacker.config.showBarButtons = options:addTickBox("enable_bar_buttons", getText("UI_options_966221273_showBarButtons"), true, getText("UI_options_966221273_showBarButtons_tooltip"))
+    ItemStacker.config.showContextMenuButtons = options:addTickBox("enable_context_menu_buttons", getText("UI_options_966221273_showContextMenuButtons"), true, getText("UI_options_966221273_showContextMenuButtons_tooltip"))
+end
+
 -- adding destination inventory bar buttons
 ItemStacker.addContainerStackButton = function(playerId)
     ItemStacker.playerId = playerId;
+    if ItemStacker.config.showBarButtons:getValue() == false then
+        return
+    end
     local playerLoot = getPlayerLoot(playerId);
     -- Stack: stack only to selected container
     local textWidth = getTextManager():MeasureStringX(UIFont.Small, getText("UI_StackToSelected"))
@@ -46,6 +56,9 @@ end
 
 -- adding context menus
 ItemStacker.addStackContextMenuItems = function(player, context, items)
+    if ItemStacker.config.showContextMenuButtons:getValue() == false then
+        return
+    end
     context:addOption(getText('UI_ContextMenu_StackToSelected'), getSpecificPlayer(player), ItemStacker.stackItemsFromCurrentToSelected)
     context:addOption(getText('UI_ContextMenu_StackToAll'), getSpecificPlayer(player), ItemStacker.stackItemsFromCurrentToNearby)
 end
@@ -152,6 +165,7 @@ end
 
 -- Subscribing to events
 
+ItemStacker.addModOptions()
 Events.OnGameBoot.Add(ItemStacker.addKeybinds);
 Events.OnKeyPressed.Add(ItemStacker.onKeyPressed);
 Events.OnCreatePlayer.Add(ItemStacker.addContainerStackButton);

@@ -1,4 +1,8 @@
 UI_RU = {
+	UI_options_966221273_showBarButtons = "Показывать кнопки на панели",
+	UI_options_966221273_showBarButtons_tooltip = "Показывать кнопки 'Дополнить' и 'Все' на панели дополняемого инвентаря",
+	UI_options_966221273_showContextMenuButtons = "Показывать контекстные кнопки",
+	UI_options_966221273_showContextMenuButtons_tooltip = "Показывать кнопки 'Дополнить выбранный контейнер' и 'Дополнить все контейнеры' в контекстном меню инвентаря",
 	UI_optionscreen_binding_SmartStack = "Smart Stack",
 	UI_optionscreen_binding_SmartStack_StackToSelected = "Дополнить выбранный контейнер",
 	UI_optionscreen_binding_SmartStack_StackToAll = "Дополнить все контейнеры",
